@@ -1,0 +1,11 @@
+<!-- داخل AndroidManifest.xml -->
+<application
+    android:icon="@mipmap/ic_launcher"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:label="@string/app_label"
+    ... >
+    <activity
+        android:name=".MainActivity"
+        android:label="@string/app_label"
+        ... />
+</application>

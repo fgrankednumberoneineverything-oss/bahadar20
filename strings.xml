@@ -1,0 +1,8 @@
+<resources>
+    <!-- متن زیر آیکون روی گوشی: خالی (نویسه نامرئی) -->
+    <string name="app_label">&#x2800;</string>
+    <!-- نام داخل برنامه -->
+    <string name="app_name">بهادار</string>
+    <string name="app_name_en">Bahadar</string>
+    <string name="app_slogan">محاسبه دقیق، سود بیشتر</string>
+</resources>

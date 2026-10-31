@@ -1,0 +1,4 @@
+node_modules/
+android/
+www/exceljs.min.js
+.DS_Store
