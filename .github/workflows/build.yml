@@ -1,0 +1,41 @@
+name: Build Bahadar APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - name: Organize www
+        run: |
+          mkdir -p www
+          cp index.html app.js style.css bahadar.css ext.css ext-*.js excel-reports.js i18n-en.js import-company.js recon-ui.js reconcile.js doogh-abali.json icon*.png www/
+      - name: Dependencies
+        run: |
+          npm install
+          cp node_modules/exceljs/dist/exceljs.min.js www/
+      - name: Android project
+        run: |
+          npx cap add android
+          npx cap sync android
+      - name: Icons
+        run: |
+          R=android/app/src/main/res
+          rm -f $R/mipmap-anydpi-v26/ic_launcher.xml $R/mipmap-anydpi-v26/ic_launcher_round.xml
+          for pair in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
+            d=${pair%%:*}; s=${pair##*:}
+            for n in ic_launcher ic_launcher_round ic_launcher_foreground; do cp www/icon_$s.png $R/mipmap-$d/$n.png; done
+          done
+      - name: Signing key
+        run: mkdir -p ~/.android && cp debug.keystore ~/.android/debug.keystore
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with: { name: bahadar-apk, path: android/app/build/outputs/apk/debug/app-debug.apk }
